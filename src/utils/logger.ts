@@ -52,41 +52,52 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMNMNMMMNMMNNMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNMMNNNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 */
-export enum InterfaceMode {
-  /**
-   * QR code page.
-   */
-  QR = 'QR',
-  /**
-   * Chat page.
-   */
-  MAIN = 'CONNECTION',
-  /**
-   * Loading page, waiting data from smartphone.
-   */
-  SYNCING = 'SYNCING',
-  /**
-   * Offline page, when there are no internet.
-   */
-  OFFLINE = 'OFFLINE',
-  /**
-   * Conflic page, when there are another whatsapp web openned.
-   */
-  CONFLICT = 'CONFLICT',
-  /**
-   * Blocked page, by proxy.
-   */
-  PROXYBLOCK = 'PROXYBLOCK',
-  /**
-   * Blocked page.
-   */
-  TOS_BLOCK = 'TOS_BLOCK',
-  /**
-   * Blocked page.
-   */
-  SMB_TOS_BLOCK = 'SMB_TOS_BLOCK',
-  /**
-   * Deprecated page.
-   */
-  DEPRECATED_VERSION = 'DEPRECATED_VERSION'
+import { config, createLogger, format, transports } from 'winston';
+import { TransformableInfo } from 'logform';
+
+export type LogLevel =
+  | 'error'
+  | 'warn'
+  | 'info'
+  | 'http'
+  | 'verbose'
+  | 'debug'
+  | 'silly';
+
+export interface MetaInfo {
+  session?: string;
+  type?: string;
 }
+
+export interface SessionInfo extends TransformableInfo, MetaInfo {}
+
+export const formatLabelSession = format((info: SessionInfo, opts?: any) => {
+  const parts = [];
+  if (info.session) {
+    parts.push(info.session);
+    delete info.session;
+  }
+  if (info.type) {
+    parts.push(info.type);
+    delete info.type;
+  }
+
+  if (parts.length) {
+    let prefix = parts.join(':');
+    info.message = `[${prefix}] ${info.message}`;
+  }
+  return info;
+});
+
+export const defaultLogger = createLogger({
+  level: 'info',
+  levels: config.npm.levels,
+  format: format.combine(
+    formatLabelSession(),
+    format.colorize(),
+    format.padLevels(),
+    format.simple()
+  ),
+  //   defaultMeta: { service: 'venon-bot' },
+  transports: [new transports.Console()]
+});

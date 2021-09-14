@@ -96,7 +96,7 @@ export { isLoggedIn } from './is-logged-in';
 export { leaveGroup } from './leave-group';
 export {
   asyncLoadAllEarlierMessages,
-  loadAllEarlierMessages,
+  loadAllEarlierMessages
 } from './load-all-earlier-chat-messages';
 export { loadAndGetAllMessagesInChat } from './load-and-get-all-messages-in-chat';
 export { loadChatEarlierMessages } from './load-earlier-chat-messages';
@@ -152,3 +152,7 @@ export { downloadMedia } from './download-media';
 export { checkIdMessage } from './check-id-messagem';
 export { returnReply } from './return-reply';
 export { logout } from './logout';
+export { setGroupDescription } from './set-group-description';
+export { setGroupTitle } from './set-group-title';
+export { setGroupSettings } from './set-group-settings';
+export { sendButtons } from './send-buttons';

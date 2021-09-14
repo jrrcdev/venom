@@ -71,7 +71,7 @@ export async function sendLinkPreview(chatId, url, text) {
           _Path.End,
         'i'
       );
-    },
+    }
   };
   if (!_Path.Reg().test(url)) {
     var text =
@@ -82,7 +82,7 @@ export async function sendLinkPreview(chatId, url, text) {
   if (!chat.erro) {
     const linkPreview = await Store.WapQuery.queryLinkPreview(url);
     const newMsgId = await window.WAPI.getNewMessageId(chat.id);
-    let inChat = await WAPI.getchatId(chatId).catch(() => {});
+    let inChat = await WAPI.getchatId(chat.id).catch(() => {});
     if (inChat) {
       chat.lastReceivedKey._serialized = inChat._serialized;
       chat.lastReceivedKey.id = inChat.id;
@@ -107,7 +107,7 @@ export async function sendLinkPreview(chatId, url, text) {
       matchedText: linkPreview.matchedText,
       preview: linkPreview.preview,
       thumbnail: linkPreview.thumbnail,
-      title: linkPreview.title,
+      title: linkPreview.title
     };
     var result = (
       await Promise.all(window.Store.addAndSendMsgToChat(chat, message))

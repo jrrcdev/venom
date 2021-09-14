@@ -64,7 +64,7 @@ import {
   SendFileResult,
   SendLinkResult,
   SendStickerResult,
-  WhatsappProfile,
+  WhatsappProfile
 } from '../api/model';
 import { tokenSession } from '../config/tokenSession.config';
 
@@ -218,6 +218,12 @@ interface WAPI {
     content: any,
     options?: any
   ) => Promise<string>;
+  sendButtons: (
+    to: string,
+    title: string,
+    buttons: [],
+    subtitle: string
+  ) => Promise<Object>;
   sendMessageWithThumb: (
     thumb: string,
     url: string,
@@ -248,6 +254,13 @@ interface WAPI {
   sendSeen: (to: string) => void;
   returnReply: (message: object) => object;
   onStreamChange: (callback: Function) => void;
+  setGroupDescription: (groupId: string, description: string) => object;
+  setGroupTitle: (groupId: string, title: string) => object;
+  setGroupSettings: (
+    groupId: string,
+    settings: string,
+    value: boolean
+  ) => Promise<object>;
 }
 
 declare global {

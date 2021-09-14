@@ -52,41 +52,31 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMNMNMMMNMMNNMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNMMNNNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 */
-export enum InterfaceMode {
+
+export enum GroupSettings {
   /**
-   * QR code page.
+   * Define how can send message in the group
+   * `true` only admins
+   * `false` everyone
    */
-  QR = 'QR',
+  ANNOUNCEMENT = 'announcement',
+
   /**
-   * Chat page.
+   * Define how can edit the group data
+   * `true` only admins
+   * `false` everyone
    */
-  MAIN = 'CONNECTION',
+  RESTRICT = 'restrict',
+
   /**
-   * Loading page, waiting data from smartphone.
+   * Non-Documented
    */
-  SYNCING = 'SYNCING',
+  NO_FREQUENTLY_FORWARDED = 'no_frequently_forwarded',
+
   /**
-   * Offline page, when there are no internet.
+   * Enable or disable temporary messages
+   * `true` to enable
+   * `false` to disable
    */
-  OFFLINE = 'OFFLINE',
-  /**
-   * Conflic page, when there are another whatsapp web openned.
-   */
-  CONFLICT = 'CONFLICT',
-  /**
-   * Blocked page, by proxy.
-   */
-  PROXYBLOCK = 'PROXYBLOCK',
-  /**
-   * Blocked page.
-   */
-  TOS_BLOCK = 'TOS_BLOCK',
-  /**
-   * Blocked page.
-   */
-  SMB_TOS_BLOCK = 'SMB_TOS_BLOCK',
-  /**
-   * Deprecated page.
-   */
-  DEPRECATED_VERSION = 'DEPRECATED_VERSION'
+  EPHEMERAL = 'ephemeral'
 }

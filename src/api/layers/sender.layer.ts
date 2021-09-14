@@ -59,7 +59,7 @@ import {
   base64MimeType,
   downloadFileToBase64,
   fileToBase64,
-  stickerSelect,
+  stickerSelect
 } from '../helpers';
 import { filenameFromMimeType } from '../helpers/filename-from-mimetype';
 import { Message, SendFileResult, SendStickerResult } from '../model';
@@ -89,15 +89,15 @@ export class SenderLayer extends ListenerLayer {
           type: type,
           value: to,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'content',
           type: type,
           value: content,
           function: typeFunction,
-          isUser: true,
-        },
+          isUser: true
+        }
       ];
       const validating = checkValuesSender(check);
       if (typeof validating === 'object') {
@@ -137,22 +137,22 @@ export class SenderLayer extends ListenerLayer {
           type: type,
           value: chatId,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'url',
           type: type,
           value: url,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'title',
           type: type,
           value: title,
           function: typeFunction,
-          isUser: false,
-        },
+          isUser: false
+        }
       ];
       const validating = checkValuesSender(check);
       if (typeof validating === 'object') {
@@ -194,22 +194,22 @@ export class SenderLayer extends ListenerLayer {
           type: type,
           value: to,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'base64',
           type: type,
           value: base64,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'filename',
           type: type,
           value: filename,
           function: typeFunction,
-          isUser: false,
-        },
+          isUser: false
+        }
       ];
       const validating = checkValuesSender(check);
       if (typeof validating === 'object') {
@@ -222,7 +222,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'Invalid base64!',
+          text: 'Invalid base64!'
         };
         return reject(obj);
       }
@@ -231,7 +231,7 @@ export class SenderLayer extends ListenerLayer {
         const obj = {
           erro: true,
           to: to,
-          text: 'Not an image, allowed formats png, jpeg and webp',
+          text: 'Not an image, allowed formats png, jpeg and webp'
         };
         return reject(obj);
       }
@@ -251,19 +251,24 @@ export class SenderLayer extends ListenerLayer {
       }
     });
   }
-
+  /**
+   * Sends messages with options
+   * @param to Chat id
+   * @param content text string
+   * @param options object
+   */
   public async sendMessageOptions(
-    chat: any,
+    to: any,
     content: any,
     options?: any
   ): Promise<Message> {
     return new Promise(async (resolve, reject) => {
       try {
         const messageId = await this.page.evaluate(
-          ({ chat, content, options }) => {
-            return WAPI.sendMessageOptions(chat, content, options);
+          ({ to, content, options }) => {
+            return WAPI.sendMessageOptions(to, content, options);
           },
-          { chat, content, options }
+          { to, content, options }
         );
         const result = (await this.page.evaluate(
           (messageId: any) => WAPI.getMessageById(messageId),
@@ -272,6 +277,73 @@ export class SenderLayer extends ListenerLayer {
         resolve(result);
       } catch (error) {
         reject(error);
+      }
+    });
+  }
+
+  /**
+   * Send buttons reply
+   * @param {string} to the numberid xxx@c.us
+   * @param {string} title the titulo
+   * @param {string} subtitle the subtitle
+   * @param {array} buttons arrays
+   */
+  public async sendButtons(
+    to: string,
+    title: string,
+    buttons: [],
+    subtitle: string
+  ): Promise<object> {
+    return new Promise(async (resolve, reject) => {
+      const typeFunction = 'sendButtons';
+      const type = 'string';
+      const obj = 'object';
+      const check = [
+        {
+          param: 'to',
+          type: type,
+          value: to,
+          function: typeFunction,
+          isUser: true
+        },
+        {
+          param: 'title',
+          type: type,
+          value: title,
+          function: typeFunction,
+          isUser: true
+        },
+        {
+          param: 'subtitle',
+          type: type,
+          value: subtitle,
+          function: typeFunction,
+          isUser: true
+        },
+        {
+          param: 'buttons',
+          type: obj,
+          value: buttons,
+          function: typeFunction,
+          isUser: true
+        }
+      ];
+      const validating = checkValuesSender(check);
+      if (typeof validating === 'object') {
+        return reject(validating);
+      }
+
+      const result = await this.page.evaluate(
+        ({ to, title, buttons, subtitle }) => {
+          return WAPI.sendButtons(to, title, buttons, subtitle);
+        },
+        { to, title, buttons, subtitle }
+      );
+
+      if (result['erro'] == true) {
+        return reject(result);
+      } else {
+        return resolve(result);
       }
     });
   }
@@ -295,7 +367,7 @@ export class SenderLayer extends ListenerLayer {
         'image/png',
         'image/jpg',
         'image/jpeg',
-        'image/webp',
+        'image/webp'
       ]);
 
       if (!base64) {
@@ -306,7 +378,7 @@ export class SenderLayer extends ListenerLayer {
         const obj = {
           erro: true,
           to: to,
-          text: 'No such file or directory, open "' + filePath + '"',
+          text: 'No such file or directory, open "' + filePath + '"'
         };
         return reject(obj);
       }
@@ -345,7 +417,7 @@ export class SenderLayer extends ListenerLayer {
         url,
         title,
         description,
-        chatId,
+        chatId
       }
     );
   }
@@ -370,22 +442,22 @@ export class SenderLayer extends ListenerLayer {
           type: type,
           value: to,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'content',
           type: type,
           value: content,
           function: typeFunction,
-          isUser: true,
+          isUser: true
         },
         {
           param: 'quotedMsg',
           type: type,
           value: quotedMsg,
           function: typeFunction,
-          isUser: false,
-        },
+          isUser: false
+        }
       ];
       const validating = checkValuesSender(check);
       if (typeof validating === 'object') {
@@ -419,7 +491,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'Invalid base64!',
+          text: 'Invalid base64!'
         };
         return reject(obj);
       }
@@ -439,7 +511,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'Use the MP3 format to be able to send an audio!',
+          text: 'Use the MP3 format to be able to send an audio!'
         };
         return reject(obj);
       }
@@ -454,7 +526,7 @@ export class SenderLayer extends ListenerLayer {
   public async sendVoice(to: string, filePath: string) {
     return new Promise(async (resolve, reject) => {
       let base64: string | false = await downloadFileToBase64(filePath, [
-        'audio/mpeg',
+        'audio/mpeg'
       ]);
 
       if (!base64) {
@@ -465,7 +537,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'No such file or directory, open "' + filePath + '"',
+          text: 'No such file or directory, open "' + filePath + '"'
         };
         return reject(obj);
       }
@@ -488,7 +560,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'Use the MP3 format to be able to send an audio!',
+          text: 'Use the MP3 format to be able to send an audio!'
         };
         return reject(obj);
       }
@@ -516,7 +588,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'Invalid base64!',
+          text: 'Invalid base64!'
         };
         return reject(obj);
       }
@@ -563,7 +635,7 @@ export class SenderLayer extends ListenerLayer {
         obj = {
           erro: true,
           to: to,
-          text: 'No such file or directory, open "' + filePath + '"',
+          text: 'No such file or directory, open "' + filePath + '"'
         };
         return reject(obj);
       }
@@ -733,7 +805,7 @@ export class SenderLayer extends ListenerLayer {
         } else {
           throw {
             error: true,
-            message: 'Error with sharp library, check the console log',
+            message: 'Error with sharp library, check the console log'
           };
         }
       } else {
@@ -757,7 +829,7 @@ export class SenderLayer extends ListenerLayer {
       'image/png',
       'image/jpg',
       'image/jpeg',
-      'image/webp',
+      'image/webp'
     ]);
 
     if (!b64) {
@@ -798,7 +870,7 @@ export class SenderLayer extends ListenerLayer {
         } else {
           throw {
             error: true,
-            message: 'Error with sharp library, check the console log',
+            message: 'Error with sharp library, check the console log'
           };
         }
       } else {

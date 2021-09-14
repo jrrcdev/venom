@@ -58,7 +58,7 @@ export function scope(id, erro, status, text = null) {
     to: id,
     erro: erro,
     text: text,
-    status: status,
+    status: status
   };
   return e;
 }
@@ -72,7 +72,7 @@ export async function getchatId(chatId) {
         isMyContact: to.contact.isMyContact,
         verifiedName: to.contact.verifiedName,
         pushname: to.contact.pushname,
-        isOnline: to.isOnline,
+        isOnline: to.isOnline
       };
     Object.assign(objTo, extend);
     return objTo;
@@ -139,8 +139,19 @@ export async function sendExist(chatId, returnChat = true, Send = true) {
     }
   }
 
-  let ck = await window.WAPI.checkNumberStatus(chatId),
-    chat = await window.WAPI.getChat(ck.id._serialized);
+  let ck = await window.WAPI.checkNumberStatus(chatId);
+
+  if (ck.status === 404) {
+    return WAPI.scope(chatId, true, ck.status, 'The number does not exist');
+  }
+  let chat = await window.WAPI.getChat(ck.id._serialized);
+
+  if (ck.numberExists && chat === undefined) {
+    var idUser = new window.Store.UserConstructor(chatId, {
+      intentionallyUsePrivateConstructor: true
+    });
+    chat = await Store.Chat.find(idUser);
+  }
 
   if (!chat) {
     const storeChat = await window.Store.Chat.find(chatId);
