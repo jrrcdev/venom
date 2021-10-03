@@ -52,191 +52,156 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMNMNMMMNMMNNMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNMMNNNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 */
-import { Page } from 'puppeteer';
-import { CreateConfig } from '../../config/create-config';
-import { UILayer } from './ui.layer';
-import { Scope, checkValuesSender } from '../helpers/layers-interface';
-
-let obj: Scope;
-
-export class ControlsLayer extends UILayer {
-  constructor(public page: Page, session?: string, options?: CreateConfig) {
-    super(page, session, options);
-  }
-  /**
-   * Check if there is chat
-   * @param contactId {string} id '000000000000@c.us'
-   * @returns object
-   */
-  public async checkChat(contactId: string) {
-    return new Promise(async (resolve, reject) => {
-      const result = await this.page.evaluate(
-        ({ contactId }) => {
-          return WAPI.checkChat(contactId);
-        },
-        { contactId }
-      );
-      if (result['erro'] == true) {
-        return reject(result);
-      } else {
-        return resolve(result);
-      }
-    });
+/**
+ * Send List menu
+ * @param {string} to the numberid xxx@c.us
+ * @param {string} title the titulo
+ * @param {string} subtitle the subtitle
+ * @param {string} description the description
+ * @param {string} buttonText the name button
+ * @param {array} menu List menu
+ */
+export async function sendListMenu(
+  to,
+  title,
+  subTitle,
+  description,
+  buttonText,
+  menu
+) {
+  if (!title && typeof title != 'string') {
+    return WAPI.scope(null, true, 404, 'Enter the title variable as an string');
   }
 
-  /**
-   * Unblock contact
-   * @param contactId {string} id '000000000000@c.us'
-   * @returns boolean
-   */
-  public async unblockContact(contactId: string) {
-    return this.page.evaluate(
-      (contactId) => WAPI.unblockContact(contactId),
-      contactId
+  if (!subTitle && typeof subTitle != 'string') {
+    return WAPI.scope(
+      null,
+      true,
+      404,
+      'Enter the SubTitle variable as an string'
     );
   }
 
-  /**
-   * Block contact
-   * @param contactId {string} id '000000000000@c.us'
-   * @returns boolean
-   */
-  public async blockContact(contactId: string) {
-    return this.page.evaluate(
-      (contactId) => WAPI.blockContact(contactId),
-      contactId
+  if (!description && typeof description != 'string') {
+    return WAPI.scope(
+      null,
+      true,
+      404,
+      'Enter the description variable as an string'
     );
   }
 
-  /**
-   * puts the chat as unread
-   * @param contactId {string} id '000000000000@c.us'
-   * @returns boolean
-   */
-  public async markUnseenMessage(contactId: string) {
-    return this.page.evaluate(
-      (contactId) => WAPI.markUnseenMessage(contactId),
-      contactId
+  if (!buttonText && typeof buttonText != 'string') {
+    return WAPI.scope(
+      null,
+      true,
+      404,
+      'Enter the buttonText variable as an string'
     );
   }
 
-  /**
-   * Deletes the given chat
-   * @param chatId {string} id '000000000000@c.us'
-   * @returns boolean
-   */
-  public async deleteChat(chatId: string) {
-    return this.page.evaluate(
-      (chatId) => WAPI.deleteConversation(chatId),
-      chatId
-    );
+  if (!menu && Array.isArray(menu) === false) {
+    return WAPI.scope(null, true, 404, 'Enter the menu variable as an array');
   }
 
-  /**
-   * Archive and unarchive chat messages with true or false
-   * @param chatId {string} id '000000000000@c.us'
-   * @param option {boolean} true or false
-   * @returns boolean
-   */
-  public async archiveChat(chatId: string, option: boolean) {
-    return this.page.evaluate(
-      ({ chatId, option }) => WAPI.archiveChat(chatId, option),
-      { chatId, option }
-    );
-  }
-
-  /**
-   * Pin and Unpin chat messages with true or false
-   * @param chatId {string} id '000000000000@c.us'
-   * @param option {boolean} true or false
-   * @param nonExistent {boolean} Pin chat, non-existent (optional)
-   * @returns object
-   */
-  public async pinChat(chatId: string, option: boolean, nonExistent?: boolean) {
-    return new Promise(async (resolve, reject) => {
-      const result = await this.page.evaluate(
-        ({ chatId, option, nonExistent }) => {
-          return WAPI.pinChat(chatId, option, nonExistent);
-        },
-        { chatId, option, nonExistent }
-      );
-      if (result['erro'] == true) {
-        reject(result);
-      } else {
-        resolve(result);
-      }
-    });
-  }
-
-  /**
-   * Deletes all messages of given chat
-   * @param chatId
-   * @returns boolean
-   */
-  public async clearChatMessages(chatId: string) {
-    return this.page.evaluate(
-      (chatId) => WAPI.clearChatMessages(chatId),
-      chatId
-    );
-  }
-
-  /**
-   * Deletes message of given message id
-   * @param chatId The chat id from which to delete the message.
-   * @param messageId The specific message id of the message to be deleted
-   * @param onlyLocal If it should only delete locally (message remains on the other recipienct's phone). Defaults to false.
-   */
-  public async deleteMessage(
-    chatId: string,
-    messageId: string[]
-  ): Promise<Object> {
-    return new Promise(async (resolve, reject) => {
-      const typeFunction = 'deleteMessage';
-      const type = 'string';
-      const check = [
-        {
-          param: 'chatId',
-          type: type,
-          value: chatId,
-          function: typeFunction,
-          isUser: true
-        },
-        {
-          param: 'messageId',
-          type: 'object',
-          value: messageId,
-          function: typeFunction,
-          isUser: true
+  for (let index in menu) {
+    if (index !== 'remove') {
+      if (
+        !!menu[index].title &&
+        typeof menu[index].title === 'string' &&
+        menu[index].title.length
+      ) {
+        if (
+          !!menu[index].rows &&
+          Array.isArray(menu[index].rows) &&
+          menu[index].rows.length
+        ) {
+          for (let i in menu[index].rows) {
+            if (i !== 'remove') {
+              if (
+                !!menu[index].rows[i].title &&
+                menu[index].rows[i].title.length
+              ) {
+                if (
+                  !!menu[index].rows[i].description &&
+                  menu[index].rows[i].description.length
+                ) {
+                  menu[index].rows[i].rowId = `dessert_${i}`;
+                } else {
+                  return WAPI.scope(
+                    null,
+                    true,
+                    404,
+                    'Enter the Description variable as an string'
+                  );
+                }
+              } else {
+                return WAPI.scope(
+                  null,
+                  true,
+                  404,
+                  'Enter the Title variable as an string'
+                );
+              }
+            }
+          }
+        } else {
+          return WAPI.scope(null, true, 404, 'Rows must be an object array');
         }
-      ];
-
-      const validating = checkValuesSender(check);
-      if (typeof validating === 'object') {
-        return reject(validating);
-      }
-      const result = await this.page.evaluate(
-        ({ chatId, messageId }) => WAPI.deleteMessages(chatId, messageId),
-        { chatId, messageId }
-      );
-
-      if (result['erro'] == true) {
-        return reject(result);
       } else {
-        return resolve(result);
+        return WAPI.scope(null, true, 404, 'Incorrect Title passed in menu');
       }
-    });
+    }
   }
 
-  /**
-   * Archive and unarchive chat messages with true or false
-   * @param chatId {string} id '000000000000@c.us'
-   * @param option {boolean} true or false
-   * @returns boolean
-   */
-  public async setMessagesAdminsOnly(chatId: string, option: boolean) {
-    return this.page.evaluate(
-      ({ chatId, option }) => WAPI.setMessagesAdminsOnly(chatId, option),
-      { chatId, option }
-    );
+  const chat = await WAPI.sendExist(to);
+
+  if (chat && chat.status != 404) {
+    const newMsgId = await window.WAPI.getNewMessageId(chat.id);
+    const fromwWid = await window.Store.Conn.wid;
+    const inChat = await WAPI.getchatId(chat.id).catch(() => {});
+
+    if (inChat) {
+      chat.lastReceivedKey._serialized = inChat._serialized;
+      chat.lastReceivedKey.id = inChat.id;
+    }
+
+    const message = {
+      id: newMsgId,
+      ack: 0,
+      from: fromwWid,
+      to: chat.id,
+      local: !0,
+      self: 'out',
+      t: parseInt(new Date().getTime() / 1000),
+      isNewMsg: !0,
+      invis: true,
+      footer: subTitle,
+      notifyName: '',
+      type: 'list',
+      interactiveAnnotations: true,
+      interactiveMessage: true,
+      star: false,
+      broadcast: false,
+      fromMe: false,
+      list: {
+        title: title,
+        description: description,
+        buttonText: buttonText,
+        listType: 1,
+        sections: menu
+      }
+    };
+
+    var result = (
+      await Promise.all(window.Store.addAndSendMsgToChat(chat, message))
+    )[1];
+    if (result === 'success' || result === 'OK') {
+      return WAPI.scope(newMsgId, false, result, null);
+    } else {
+      return WAPI.scope(newMsgId, true, result, null);
+    }
+  } else {
+    return chat;
   }
 }
