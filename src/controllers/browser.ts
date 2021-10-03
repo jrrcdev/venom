@@ -169,7 +169,7 @@ export async function initBrowser(
           : [...puppeteerConfig.chromiumArgs],
         ...options.puppeteerOptions,
         ...extras
-      })
+      } as any)
       .then((e) => {
         browser = e;
       })
