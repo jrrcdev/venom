@@ -1,3 +1,91 @@
+## [4.0.2](https://github.com/orkestral/venom/compare/v4.0.1...v4.0.2) (2021-11-17)
+
+
+### Bug Fixes
+
+* checkNumber ([42e631e](https://github.com/orkestral/venom/commit/42e631ebcbcd5baccedec31f37512773c77b186e))
+* eslint ([7a91719](https://github.com/orkestral/venom/commit/7a91719ec6b0a414c33cc176063778fe0597bab8))
+* eslint ([5779d62](https://github.com/orkestral/venom/commit/5779d62a44fe90be72417a3037e14a7d24ac242a))
+* send ([f1a6289](https://github.com/orkestral/venom/commit/f1a6289af68449ea2d0fca476dab8c2cb12057b0))
+* Send with more digits ([14e2fea](https://github.com/orkestral/venom/commit/14e2fea6fe6b066ce6a793b7894c1d8955b15792))
+* webpack ([dc6e5db](https://github.com/orkestral/venom/commit/dc6e5db8380a0bd0b2f56d4f1e4a9c88d6f7ab66))
+
+
+
+## [4.0.1](https://github.com/orkestral/venom/compare/v4.0.0...v4.0.1) (2021-11-08)
+
+
+### Bug Fixes
+
+* corretion for not multidevice version ([782fea4](https://github.com/orkestral/venom/commit/782fea4b1c664e4d96c664545eba2cdfe700c9c1))
+* corretion for version not multidevice ([e4d9c37](https://github.com/orkestral/venom/commit/e4d9c37cc5ee4b42db575a9145180f4134c49245))
+* eslint ([77a670b](https://github.com/orkestral/venom/commit/77a670b123fad100644705394c34750530a3d192))
+* readme param MD ([96c3163](https://github.com/orkestral/venom/commit/96c31630485c789a59d3d5e93314280b8f77ebcc))
+
+
+
+# [4.0.0](https://github.com/orkestral/venom/compare/v3.1.12...v4.0.0) (2021-11-08)
+
+
+
+## [3.1.12](https://github.com/orkestral/venom/compare/v3.1.11...v3.1.12) (2021-10-28)
+
+
+### Bug Fixes
+
+* Error connect ([e15a018](https://github.com/orkestral/venom/commit/e15a018486a36edc510b57ca5206f38c639bf053))
+
+
+
+## [3.1.11](https://github.com/orkestral/venom/compare/v3.1.10...v3.1.11) (2021-10-24)
+
+
+
+## [3.1.10](https://github.com/orkestral/venom/compare/v3.1.9...v3.1.10) (2021-10-24)
+
+
+### Bug Fixes
+
+* body ([242df0b](https://github.com/orkestral/venom/commit/242df0be835708c772758fe8edae28cd74ee04e9))
+
+
+### Features
+
+* Add text option to the message with thumb method ([edddc3c](https://github.com/orkestral/venom/commit/edddc3cd85995c9c8ad734e3b0be2a422eb1ae17))
+
+
+
+## [3.1.9](https://github.com/orkestral/venom/compare/v3.1.8...v3.1.9) (2021-10-23)
+
+
+### Bug Fixes
+
+* deleteMessage ([1ae12b1](https://github.com/orkestral/venom/commit/1ae12b134aec9620c83859db94389c778a6886d3))
+* get profile ([642aedc](https://github.com/orkestral/venom/commit/642aedcf3ccc0517df1e12d0f27cbe8eb1a09121))
+* onAnyMessage ([ba96f80](https://github.com/orkestral/venom/commit/ba96f80790c3eb23d115ed3277f0bf1bcdcd3d4a))
+* send group ([58b46d6](https://github.com/orkestral/venom/commit/58b46d60aa8f058cdee4484e5e1a7a030bce464f))
+
+
+
+## [3.1.8](https://github.com/orkestral/venom/compare/v3.1.7...v3.1.8) (2021-10-06)
+
+
+### Bug Fixes
+
+* lint ([7a0f465](https://github.com/orkestral/venom/commit/7a0f465094b037e530b4628b01657d45bb90bdbf))
+* lint ([83a8df9](https://github.com/orkestral/venom/commit/83a8df985fa79c03b9cc6bc9ff6c5586cd53ec58))
+* lint -  fix-reply ([423c844](https://github.com/orkestral/venom/commit/423c84440dea92f631ec3079dd21a8970773a3b4))
+
+
+### Features
+
+*  checkNumber - state ([d617640](https://github.com/orkestral/venom/commit/d6176405aead74a2d734f0a7f7a21d17e49bb7a5))
+* get profile connection ([b57455e](https://github.com/orkestral/venom/commit/b57455e2b80882f4735571d5ff69a89c80fac8b3))
+* getHostDevice ([b342e23](https://github.com/orkestral/venom/commit/b342e2384f67aa0266a97ab137967efa11de582c))
+* sendCheckType ([dd10fea](https://github.com/orkestral/venom/commit/dd10feab37247b351ce5fcf6ee14335eceb9df97))
+
+
+
 ## [3.1.7](https://github.com/orkestral/venom/compare/v3.1.6...v3.1.7) (2021-09-24)
 
 

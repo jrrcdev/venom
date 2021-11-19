@@ -126,7 +126,9 @@ export async function sendListMenu(
                   !!menu[index].rows[i].description &&
                   menu[index].rows[i].description.length
                 ) {
-                  menu[index].rows[i].rowId = `dessert_${i}`;
+                  if (!menu[index].rows[i].rowId) {
+                    menu[index].rows[i].rowId = `dessert_${i}`;
+                  }
                 } else {
                   return WAPI.scope(
                     null,
@@ -156,9 +158,9 @@ export async function sendListMenu(
 
   const chat = await WAPI.sendExist(to);
 
-  if (chat && chat.status != 404) {
-    const newMsgId = await window.WAPI.getNewMessageId(chat.id);
-    const fromwWid = await window.Store.Conn.wid;
+  if (chat && chat.status != 404 && chat.id) {
+    const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
+    const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
     const inChat = await WAPI.getchatId(chat.id).catch(() => {});
 
     if (inChat) {

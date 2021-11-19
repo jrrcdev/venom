@@ -55,9 +55,13 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 import * as chalk from 'chalk';
 
-import { readFileSync } from 'fs';
+import * as fs from 'fs';
+
+import { fstat, readFileSync } from 'fs';
 
 import { Browser, Page } from 'puppeteer';
+
+import path = require('path');
 
 import { deleteFiles, checkingCloses } from '../api/helpers';
 import { Whatsapp } from '../api/whatsapp';
@@ -158,6 +162,19 @@ export async function create(
     options = sessionOrOption;
   }
   let browserToken: any;
+  if (options?.multidevice != false) {
+    const dirPath = `./${defaultOptions.folderNameToken}/${session}`;
+
+    let existFile = fs.existsSync(dirPath + '.data.json');
+
+    if (existFile) {
+      fs.unlinkSync(dirPath + '.data.json');
+    }
+
+    defaultOptions.puppeteerOptions = {
+      userDataDir: dirPath
+    };
+  }
 
   const mergedOptions = { ...defaultOptions, ...options };
 
@@ -166,7 +183,6 @@ export async function create(
   if (!mergedOptions.disableWelcome) {
     welcomeScreen();
   }
-
   // Initialize whatsapp
   if (mergedOptions.browserWS) {
     logger.info('Initializing browser...', { session });
@@ -175,7 +191,6 @@ export async function create(
   }
 
   const browser = await initBrowser(session, mergedOptions);
-
   // Erro of connect wss
   if (typeof browser === 'string' && browser === 'connect') {
     logger.info('Error when try to connect ' + mergedOptions.browserWS, {

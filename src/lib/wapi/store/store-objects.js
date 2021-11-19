@@ -227,13 +227,18 @@ export const storeObjects = [
       module.getStatus && module.setMyStatus ? module : null
   },
   {
-    id: 'ChatStates',
+    id: 'ChatState',
     conditions: (module) =>
       module.sendChatStatePaused &&
       module.sendChatStateRecording &&
       module.sendChatStateComposing
         ? module
         : null
+  },
+  {
+    id: 'sendDeleteMsgs',
+    conditions: (module) =>
+      module.sendDeleteMsgs ? module.sendDeleteMsgs : null
   },
   {
     id: 'GroupActions',
@@ -293,16 +298,6 @@ export const storeObjects = [
       module.parseMsgStubProto &&
       module.binSend &&
       module.subscribeLiveLocation
-        ? module
-        : null
-  },
-  {
-    id: 'Versions',
-    conditions: (module) =>
-      module.loadProtoVersions &&
-      module.default['15'] &&
-      module.default['16'] &&
-      module.default['17']
         ? module
         : null
   },
@@ -425,5 +420,43 @@ export const storeObjects = [
   {
     id: 'GroupSettings',
     conditions: (module) => (module.sendSetGroupProperty ? module : null)
-  }
+  },
+  {
+    id: 'MaybeMeUser',
+    conditions: (module) => (module.getMaybeMeUser ? module : null)
+  },
+  {
+    id: 'sendCreateGroup',
+    conditions: (module) =>
+      module.sendCreateGroup ? module.sendCreateGroup : null
+  },
+  {
+    id: 'sendAddParticipants',
+    conditions: (module) =>
+      module.sendAddParticipants ? module.sendAddParticipants : null
+  },
+  {
+    id: 'sendRemoveParticipants',
+    conditions: (module) =>
+      module.sendRemoveParticipants ? module.sendRemoveParticipants : null
+  },
+  {
+    id: 'sendPromoteParticipants',
+    conditions: (module) =>
+      module.sendPromoteParticipants ? module.sendPromoteParticipants : null
+  },
+  {
+    id: 'sendDemoteParticipants',
+    conditions: (module) =>
+      module.sendDemoteParticipants ? module.sendDemoteParticipants : null
+  },
+  {
+    id: 'checkNumber',
+    conditions: (module) =>
+      module.default &&
+      typeof module.default.toString === 'function' &&
+      module.default.toString().includes('Should not reach queryExists MD')
+        ? module.default
+        : null,
+  },
 ];

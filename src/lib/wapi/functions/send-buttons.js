@@ -88,17 +88,21 @@ export async function sendButtons(to, title, buttons, subtitle) {
             'passed string value in displayText'
           );
         }
-        buttons[index].buttonId = `id${index}`;
-        buttons[index].type = 1;
+        if (!buttons[index].buttonId) {
+          buttons[index].buttonId = `id${index}`;
+        }
+        if (!buttons[index].type) {
+          buttons[index].type = 1;
+        }
       }
     }
   }
 
   const chat = await WAPI.sendExist(to);
 
-  if (chat && chat.status != 404) {
-    const newMsgId = await window.WAPI.getNewMessageId(chat.id);
-    const fromwWid = await window.Store.Conn.wid;
+  if (chat && chat.status != 404 && chat.id) {
+    const newMsgId = await window.WAPI.getNewMessageId(chat.id._serialized);
+    const fromwWid = await Store.MaybeMeUser.getMaybeMeUser();
 
     const message = {
       id: newMsgId,
